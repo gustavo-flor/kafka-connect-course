@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  kafka-cluster:
+    image: landoop/fast-data-dev:2.6.2
+    ports:
+      - '2181:2181' # Zookeeper
+      - '3030:3030' # Landoop UI
+      - '8081:8081' # Schema Registry
+      - '8082:8082' # REST Proxy
+      - '8083:8083' # Kafka Connect
+      - '9092:9092' # Kafka Broker
+      - '9581:9581' # JMX of Kafka Broker
+      - '9582:9582' # JMX of Schema Registry
+      - '9583:9583' # JMX of REST Proxy
+      - '9584:9584' # JMX of Kafka Connect
+      - '9585:9585' # JMX of Zookeeper
+    environment:
+      ADV_HOST: 127.0.0.1
+  elasticsearch:
+    image: itzg/elasticsearch:2.4.3
+    ports:
+      - '9200:9200'
+    environment:
+      PLUGINS: appbaseio/dejavu
+      OPTS: -Dindex.number_of_shards=1 -Dindex.number_of_replicas=0
+  postgres:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kafka-connect-course
